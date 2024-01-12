@@ -7,104 +7,77 @@ import io.github.enums.exception.ImplementationException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public interface Mapper {
 
-    default void toMap() throws EnumerationException, ImplementationException, NoSuchFieldException, NoSuchMethodException {
-        Class<? extends Mapper> reflectionClass = getClass();
+    default Map<String, Object> toMap() throws ImplementationException, EnumerationException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 
-        checkImplementation(reflectionClass);
+        Class<? extends Mapper> reflection = getClass();
 
-        toMap(reflectionClass.getField(this.toString()));
+        prepareImplementationCheck(reflection);
 
-        Arrays.stream(reflectionClass.getEnumConstants()).forEach(e -> {
-
-            try {
-                Method method = e.getClass().getMethod("description");
-                System.out.println("method");
-                System.out.println(method);
-            } catch (NoSuchMethodException ex) {
-                throw new RuntimeException(ex);
-            }
-
-        });
+        return toMap(reflection);
     }
 
-    private void checkImplementation(Class<?> reflectionClass) throws ImplementationException, EnumerationException {
+    private void prepareImplementationCheck(Class<?> reflection) throws ImplementationException, EnumerationException {
 
-        if (!reflectionClass.isEnum()) {
-            EnumerationException.failedEnumeration(reflectionClass.getSimpleName());
+        if (!reflection.isEnum()) {
+            EnumerationException.failedEnumeration(reflection.getSimpleName());
         }
 
         Class<?> abstractType = Enumerable.class;
 
-        if (!abstractType.isAssignableFrom(reflectionClass)) {
-            ImplementationException.failedInherit(abstractType.getSimpleName(), reflectionClass.getSimpleName());
+        if (!abstractType.isAssignableFrom(reflection)) {
+            ImplementationException.failedInherit(abstractType.getSimpleName(), reflection.getSimpleName());
         }
 
         abstractType = Descriptor.class;
 
-        if (!abstractType.isAssignableFrom(reflectionClass)) {
-            ImplementationException.failedInherit(abstractType.getSimpleName(), reflectionClass.getSimpleName());
+        if (!abstractType.isAssignableFrom(reflection)) {
+            ImplementationException.failedInherit(abstractType.getSimpleName(), reflection.getSimpleName());
         }
 
     }
 
-
-    default Map<String, Object> toMap(Field element) throws NoSuchMethodException {
+    default Map<String, Object> toMap(Class<?> element) throws NoSuchFieldException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 
         Map<String, Object> maps = new HashMap<>();
 
-
-
-        try {
-            Method method = element.getClass().getMethod("description");
-        }catch (NoSuchMethodException e) {
-            System.out.println(e.getMessage());
-        }
-
+        maps.put("description",MethodCaller.make(true).action(element,"description"));
+        maps.put("value",MethodCaller.make(true).action(element,"value"));
 
         return maps;
     }
 
-    private MethodCaller caller(boolean hasParameter) {
-        return hasParameter
-                ? new MethodCaller.ParameterMethodCaller()
-                : new MethodCaller.NullableMethodCaller();
-    }
+    sealed interface MethodCaller {
 
-    interface MethodCaller {
-        default Object invoke(Field element, String name) {
-            try {
-                return action(element, name);
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException(String.format("The call method [ %s ] is incorrect.", name));
+        static MethodCaller make(boolean hasParameter) {
+            return hasParameter ? new ParameterMethodCaller() : new NullableMethodCaller();
+        }
+
+        default Object invoke(Class<?> element, String method) throws NoSuchFieldException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+            return action(element, method);
+        }
+
+        Object action(Class<?> element, String method) throws NoSuchMethodException, NoSuchFieldException, InvocationTargetException, IllegalAccessException;
+
+        final class ParameterMethodCaller implements MethodCaller {
+
+            @Override
+            public Object action(Class<?> element, String name) throws NoSuchMethodException, NoSuchFieldException, InvocationTargetException, IllegalAccessException {
+                Method method = element.getMethod(name, Field.class);
+
+                Field field = element.getField(this.toString());
+
+                return method.invoke(this, field);
             }
         }
 
-        Object action(Field element, String name) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException;
-
-        class ParameterMethodCaller implements MethodCaller {
-
+        final class NullableMethodCaller implements MethodCaller {
             @Override
-            public Object action(Field element, String name) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-                Method method = element.getClass().getMethod(name, Field.class);
-                System.out.printf("Method: %s", method);
-                return "";
-            }
-        }
-
-        class NullableMethodCaller implements MethodCaller {
-
-            @Override
-            public Object action(Field element, String name) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-                Method method = element.getClass().getMethod(name);
-                System.out.printf("Method: %s", method);
-
-                return "";
+            public Object action(Class<?> element, String method) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+                return element.getMethod(method).invoke(this);
             }
         }
     }
