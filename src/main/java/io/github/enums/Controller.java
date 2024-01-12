@@ -15,7 +15,7 @@ public class Controller {
 
     }
 
-    public static void main(String[] args) throws NoSuchFieldException, EnumerationException, ImplementationException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public static void main(String[] args) throws EnumerationException, ImplementationException {
 
         System.out.println(Color.Red.toMap());
 
