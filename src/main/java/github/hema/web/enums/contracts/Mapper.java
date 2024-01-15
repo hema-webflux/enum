@@ -8,6 +8,12 @@ import java.util.*;
 
 public interface Mapper {
 
+    /**
+     * Get the enum as an map.
+     * @return
+     * @throws NotImplementedException
+     * @throws BadMethodCallException
+     */
     default Map<String, Object> toMap() throws NotImplementedException, BadMethodCallException {
 
         Class<? extends Mapper> reflection = getClass();
