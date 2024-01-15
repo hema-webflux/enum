@@ -1,11 +1,12 @@
 # Enum
 
 #### Simple
+
 ```java
-import io.github.enums.annotations.Description;
-import io.github.enums.contracts.Descriptor;
-import io.github.enums.contracts.Enumerable;
-import io.github.enums.contracts.Arrayable;
+import io.github.hema.enums.annotations.Description;
+import io.github.hema.enums.contracts.Descriptor;
+import io.github.hema.enums.contracts.Enumerable;
+import io.github.hema.enums.contracts.Arrayable;
 
 public enum Color implements Descriptor, Arrayable, Enumerable<String> {
     @Description("红色")
@@ -26,8 +27,12 @@ public enum Color implements Descriptor, Arrayable, Enumerable<String> {
     }
 }
 
-Color.Red.toMap(); //   { "description": "红色", "value": "red" }
+Color.Red.
 
-Color.Red.toArray(); // [{ "description": "红色", "value": "red" },{ "description": "蓝色", "value": "blue" }]
+toMap(); //   { "description": "红色", "value": "red" }
+
+Color.Red.
+
+toArray(); // [{ "description": "红色", "value": "red" },{ "description": "蓝色", "value": "blue" }]
 
 ```

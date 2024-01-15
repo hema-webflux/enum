@@ -1,4 +1,4 @@
-package io.github.enums.contracts;
+package io.github.hema.enums.contracts;
 
 public interface Enumerable<T> {
 
