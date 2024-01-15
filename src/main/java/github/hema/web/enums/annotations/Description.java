@@ -1,4 +1,4 @@
-package io.github.hema.enums.annotations;
+package github.hema.web.enums.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

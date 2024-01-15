@@ -1,6 +1,6 @@
-package io.github.hema.enums.contracts;
+package github.hema.web.enums.contracts;
 
-import io.github.hema.enums.annotations.Description;
+import github.hema.web.enums.annotations.Description;
 
 import java.lang.reflect.Field;
 
