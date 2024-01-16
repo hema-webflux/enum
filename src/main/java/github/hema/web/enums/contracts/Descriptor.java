@@ -6,10 +6,6 @@ import java.lang.reflect.Field;
 
 public interface Descriptor {
 
-    /**
-     * Get enum annotation.
-     * @return String
-     */
     default String description() {
 
         Class<? extends Descriptor> reflector = getClass();

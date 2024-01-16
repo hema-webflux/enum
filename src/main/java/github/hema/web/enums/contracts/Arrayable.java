@@ -8,10 +8,6 @@ import java.util.stream.Collectors;
 
 public interface Arrayable extends Mapper {
 
-    /**
-     * Get the enum as an array.
-     * @return Set
-     */
     default Set<Map<String, Object>> toArray() {
 
         return Arrays.stream(getClass().getEnumConstants())
