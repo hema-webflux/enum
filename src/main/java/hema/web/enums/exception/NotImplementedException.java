@@ -1,4 +1,4 @@
-package github.hema.web.enums.exception;
+package hema.web.enums.exception;
 
 public class NotImplementedException extends Exception {
     public NotImplementedException(String message) {

@@ -3,10 +3,10 @@
 #### Simple
 
 ```java
-import github.hema.web.enums.annotations.Description;
-import github.hema.web.enums.contracts.Descriptor;
-import github.hema.web.enums.contracts.Enumerable;
-import github.hema.web.enums.contracts.Arrayable;
+import hema.web.enums.annotations.Description;
+import hema.web.enums.contracts.Descriptor;
+import hema.web.enums.contracts.Enumerable;
+import hema.web.enums.contracts.Arrayable;
 
 public enum Color implements Descriptor, Arrayable, Enumerable<String> {
     @Description("红色")

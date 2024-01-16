@@ -1,4 +1,4 @@
-package github.hema.web.enums.contracts;
+package hema.web.enums.contracts;
 
 public interface Enumerable<T> {
 

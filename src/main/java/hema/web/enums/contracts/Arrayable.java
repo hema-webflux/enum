@@ -1,7 +1,7 @@
-package github.hema.web.enums.contracts;
+package hema.web.enums.contracts;
 
-import github.hema.web.enums.exception.BadMethodCallException;
-import github.hema.web.enums.exception.NotImplementedException;
+import hema.web.enums.exception.BadMethodCallException;
+import hema.web.enums.exception.NotImplementedException;
 
 import java.util.*;
 import java.util.stream.Collectors;
