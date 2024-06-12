@@ -8,31 +8,25 @@ import hema.web.enums.contracts.Descriptor;
 import hema.web.enums.contracts.Enumerable;
 import hema.web.enums.contracts.Arrayable;
 
-public enum Color implements Descriptor, Arrayable, Enumerable<String> {
-    @Description("红色")
-    Red("red"),
+public enum Response implements Descriptor, Arrayable, Enumerable<Integer> {
+    
+    @Description(desc = "system error", note = "checked your code.")
+    SYSTEM_EXCEPTION(1000);
 
-    @Description("蓝色")
-    Blue("blue");
+    private final Integer value;
 
-    private final String value;
-
-    Color(String value) {
+    Response(Integer value) {
         this.value = value;
     }
 
     @Override
-    public String value() {
+    public Integer value() {
         return value;
     }
 }
 
-Color.Red.
+Response.SYSTEM_EXCEPTION.toMap(); //   { "description": "system error", "value": 1000 }
 
-toMap(); //   { "description": "红色", "value": "red" }
-
-Color.Red.
-
-toArray(); // [{ "description": "红色", "value": "red" },{ "description": "蓝色", "value": "blue" }]
+Response.SYSTEM_EXCEPTION.toArray(); // [{ "description": "system error", "value": 1000 }]
 
 ```

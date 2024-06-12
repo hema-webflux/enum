@@ -76,7 +76,21 @@ publishing {
 }
 
 dependencies {
-    implementation("io.github.web-flux:enum:1.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks {
+    withType<Test> {
+        useJUnitPlatform()
+    }
+
+    // 添加如下代码
+    val args = listOf("-XX:+EnableDynamicAgentLoading", "-Xshare:off")
+
+    test {
+        jvmArgs(args)
+    }
 }
 
 signing {

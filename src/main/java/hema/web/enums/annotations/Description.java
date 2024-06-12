@@ -9,5 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Description {
 
-    String value();
+    String desc();
+
+    String note() default "";
 }
